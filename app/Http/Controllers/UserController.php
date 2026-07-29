@@ -53,8 +53,7 @@ class UserController extends Controller
         User::destroy($id);
 
         return response()->json([
-            'message' => 'Deleted'
+            'message' => 'User deleted.'
         ], 200);
     }
 }
-
