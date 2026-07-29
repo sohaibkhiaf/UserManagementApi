@@ -8,6 +8,7 @@ use App\Http\Controllers\UserController;
 // Health
 Route::get('/health', function () {
     return response()->json([
+        'status' => 'ok', 
         'message' => 'API is working 🚀'
     ], 200);
 });
@@ -18,6 +19,7 @@ Route::get('/connectivity', function () {
         DB::connection()->getPdo();
 
         return response()->json([
+            'status' => 'success', 
             'message' => 'Database connected successfully ✅'
         ], 200);
     } catch (\Exception $e) {
