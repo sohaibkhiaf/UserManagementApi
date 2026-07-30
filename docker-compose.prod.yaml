@@ -1,9 +1,6 @@
 services:
   app:
     image: sohaibkhiaf/usermanagementapi-app:latest
-    # build:
-    #   context: .
-    #   dockerfile: Dockerfile
     container_name: user_management_api
     restart: unless-stopped
     env_file:
@@ -16,9 +13,6 @@ services:
 
   webserver:
     image: sohaibkhiaf/usermanagementapi-webserver:latest
-    # build:
-    #   context: .
-    #   dockerfile: Dockerfile.nginx 
     container_name: nginx
     restart: unless-stopped
     ports:
