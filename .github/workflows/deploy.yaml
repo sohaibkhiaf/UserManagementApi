@@ -88,21 +88,17 @@ jobs:
           docker logs mysql
           exit 1
 
-      # 7. Generate App Key
-      - name: Generate App Key
-        run: docker exec user_management_api php artisan key:generate --force
-
       # 8. Run Migrations
       - name: Run Migrations
-        run: docker exec user_management_api php artisan migrate --force
+        run: docker exec app php artisan migrate --force
 
       # 9. Seed Database
       - name: Seed Database
-        run: docker exec user_management_api php artisan db:seed --force
+        run: docker exec app php artisan db:seed --force
 
       # 11. Run Tests (inside container)
       - name: Run Tests
-        run: docker exec user_management_api php artisan test --filter=ApiTest
+        run: docker exec app php artisan test --filter=ApiTest
 
       # 8. Login to Docker Hub
       - name: Login to Docker Hub
