@@ -15,7 +15,7 @@ services:
       - user_management_network
 
   webserver:
-    # image: sohaibkhiaf/usermanagementapi-webserver:v1
+    image: sohaibkhiaf/usermanagementapi-webserver:v1
     # build:
     #   context: .
     #   dockerfile: Dockerfile.nginx 
