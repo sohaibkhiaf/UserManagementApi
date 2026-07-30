@@ -1,6 +1,6 @@
 services:
   app:
-    image: sohaibkhiaf/user-management-api:v1
+    image: sohaibkhiaf/usermanagementapi-app:v1
     # build:
     #   context: .
     #   dockerfile: Dockerfile
