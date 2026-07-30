@@ -22,7 +22,7 @@ WORKDIR /var/www
 COPY . .
 
 # Install Laravel dependencies
-RUN composer install --no-dev --optimize-autoloader
+RUN composer install --optimize-autoloader
 
 # Set permissions (important for Laravel)
 RUN chown -R www-data:www-data /var/www && chmod -R 775 storage bootstrap/cache
