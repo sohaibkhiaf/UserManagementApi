@@ -47,7 +47,7 @@ jobs:
       # Create .env for CI
       - name: Create .env
         run: |
-          cat > /var/www/.env <<EOF
+          cat > .env <<EOF
           APP_ENV=${{ secrets.APP_ENV }}
           APP_KEY=${{ secrets.APP_KEY }}
 
@@ -59,10 +59,6 @@ jobs:
           DB_PASSWORD=${{ secrets.DB_PASSWORD }}
           EOF
 
-      # 7. Build images for testing (no push)
-      - name: Build Docker images (test)
-        run: docker compose -f docker-compose.prod.yaml build
-
       - name: List docker images 
         run: docker images
 
@@ -70,7 +66,7 @@ jobs:
       - name: Start containers
         run: docker compose -f docker-compose.prod.yaml up -d 
 
-      - name: List containers
+      - name: List docker containers
         run: docker ps -a
 
       # 9. Wait for MySQL to be ready
@@ -90,7 +86,7 @@ jobs:
 
       # 8. Run Migrations
       - name: Run Migrations
-        run: docker exec app php artisan migrate --force
+        run: docker exec user_management_api php artisan migrate --force
 
       # 9. Seed Database
       - name: Seed Database
