@@ -69,18 +69,25 @@ jobs:
       - name: List docker containers
         run: docker ps -a
 
-      # 9. Wait for MySQL to be ready
-      - name: Wait for MySQL
+      - name: Wait for DB (real fix)
         run: |
           for i in {1..30}; do
-            if docker exec mysql mysqladmin ping -h "localhost" -uroot -p${{ secrets.DB_PASSWORD }} --silent; then
-              echo "MySQL is ready!"
+            if docker exec user_management_api php -r "
+              try {
+                new PDO('mysql:host=db;port=3306;dbname=${{ secrets.DB_DATABASE }}','${{ secrets.DB_USERNAME }}','${{ secrets.DB_PASSWORD }}');
+                echo 'DB OK';
+              } catch (Exception \$e) {
+                exit(1);
+              }"
+            then
+              echo "DB is reachable from app!"
               exit 0
             fi
+            echo "Waiting for DB connection..."
             sleep 2
           done
 
-          echo "MySQL failed"
+          echo "DB connection failed"
           docker logs mysql
           exit 1
 
