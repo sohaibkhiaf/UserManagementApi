@@ -62,6 +62,13 @@ jobs:
       - name: List docker images 
         run: docker images
 
+      # 8. Login to Docker Hub
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          
       # 8. Start containers
       - name: Start containers
         run: docker compose -f docker-compose.prod.yaml up -d 
@@ -103,12 +110,7 @@ jobs:
       - name: Run Tests
         run: docker exec user_management_api php artisan test --filter=ApiTest
 
-      # 8. Login to Docker Hub
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+
 
       # 9. Build & Push App Image
       - name: Build & Push App
