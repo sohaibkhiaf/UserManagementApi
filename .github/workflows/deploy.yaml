@@ -117,7 +117,7 @@ jobs:
           context: .
           file: Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/user-management-api:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/user-management-api:v1
 
       # 10. Build & Push Nginx Image
       - name: Build & Push Nginx
@@ -126,7 +126,7 @@ jobs:
           context: .
           file: Dockerfile.nginx
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/usermanagementapi-webserver:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/usermanagementapi-webserver:v1
 
       # 11. SSH to Azure VM & Deploy (Won't work if something above failed)
       - name: Deploy via SSH
