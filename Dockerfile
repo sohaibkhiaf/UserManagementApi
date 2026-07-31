@@ -33,7 +33,6 @@ RUN if [ "$APP_ENV" = "production" ]; then \
 # Copy project files
 COPY . .
 
-
 RUN if [ "$APP_ENV" = "production" ]; then \
     php artisan config:cache && \
     php artisan route:cache; \
