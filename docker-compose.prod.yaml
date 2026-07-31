@@ -1,6 +1,6 @@
 services:
   app:
-    image: sohaibkhiaf/usermanagementapi-app:v2
+    image: sohaibkhiaf/usermanagementapi-app:cache
     container_name: user_management_api
     restart: unless-stopped
     env_file:
@@ -12,7 +12,7 @@ services:
       - user_management_network
 
   webserver:
-    image: sohaibkhiaf/usermanagementapi-webserver:v2
+    image: sohaibkhiaf/usermanagementapi-webserver:cache
     container_name: nginx
     restart: unless-stopped
     ports:

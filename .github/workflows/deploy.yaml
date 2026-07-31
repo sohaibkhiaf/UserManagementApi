@@ -111,7 +111,7 @@ jobs:
           context: .
           file: Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/user-management-api:v2
+          tags: ${{ secrets.DOCKER_USERNAME }}/usermanagementapi-app:cache
           build-args: |
             APP_ENV=production
 
@@ -122,7 +122,7 @@ jobs:
           context: .
           file: Dockerfile.nginx
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/usermanagementapi-webserver:v2
+          tags: ${{ secrets.DOCKER_USERNAME }}/usermanagementapi-webserver:cache
 
       # SSH to Azure VM & Deploy (Won't work if something above failed)
       - name: Deploy via SSH
@@ -147,6 +147,7 @@ jobs:
             DB_PASSWORD=${{ secrets.DB_PASSWORD }}
             EOF
 
+            ## Optional auto deployment ## 
             # # Restart containers
             # docker compose -f docker-compose.prod.yaml down
             # docker compose -f docker-compose.prod.yaml up -d
