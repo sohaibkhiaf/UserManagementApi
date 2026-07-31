@@ -112,6 +112,8 @@ jobs:
           file: Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/user-management-api:v2
+          build-args: |
+            APP_ENV=production
 
       # Build & Push Nginx Image
       - name: Build & Push Nginx

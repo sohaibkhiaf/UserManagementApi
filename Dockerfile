@@ -33,10 +33,11 @@ RUN if [ "$APP_ENV" = "production" ]; then \
 # Copy project files
 COPY . .
 
-# Run Laravel commands AFTER files exist
-RUN php artisan package:discover \
-    && php artisan config:cache \
-    && php artisan route:cache
+
+RUN if [ "$APP_ENV" = "production" ]; then \
+    php artisan config:cache && \
+    php artisan route:cache; \
+    fi
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www \
