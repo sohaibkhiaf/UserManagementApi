@@ -2,6 +2,8 @@ services:
   app:
     build:
       context: .
+      args:
+        APP_ENV: local
       dockerfile: Dockerfile
     container_name: user_management_api
     restart: unless-stopped

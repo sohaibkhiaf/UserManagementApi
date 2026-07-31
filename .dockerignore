@@ -2,6 +2,6 @@
 .git
 node_modules
 vendor
-docker-compose.*.yaml
+docker-compose.*
 Dockerfile
 Dockerfile.*

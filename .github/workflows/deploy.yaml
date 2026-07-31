@@ -10,11 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout
+      # Checkout
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. Setup PHP
+      # Setup PHP
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -22,20 +22,20 @@ jobs:
           extensions: mbstring, bcmath, pdo, mysql
           tools: composer
 
-      # 3. Install dependencies
+      # Install dependencies
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist
 
-      # 4. Install PHPCS & PHPLint (overtrue)
+      # Install PHPCS & PHPLint (overtrue)
       - name: Install QA tools
         run: |
           composer require --dev squizlabs/php_codesniffer overtrue/phplint
 
-      # 5. Run PHP CodeSniffer (Lint style)
+      # Run PHP CodeSniffer (Lint style)
       - name: Run PHPCS
         run: vendor/bin/phpcs --standard=PSR12 app/
 
-      # 6. Run PHP Syntax Check (overtrue/phplint)
+      # Run PHP Syntax Check (overtrue/phplint)
       - name: Run PHPLint
         run: |
           vendor/bin/phplint \
@@ -59,15 +59,9 @@ jobs:
           DB_PASSWORD=${{ secrets.DB_PASSWORD }}
           EOF
 
-      - name: List docker images 
-        run: docker images
-
-      # 8. Start containers
+      # Start containers
       - name: Start containers
-        run: docker compose -f docker-compose.prod.yaml up -d 
-
-      - name: List docker containers
-        run: docker ps -a
+        run: docker compose -f docker-compose.dev.yaml up -d 
 
       - name: Wait for DB (real fix)
         run: |
@@ -91,44 +85,44 @@ jobs:
           docker logs mysql
           exit 1
 
-      # 8. Run Migrations
+      # Run Migrations
       - name: Run Migrations
         run: docker exec user_management_api php artisan migrate --force
 
-      # 9. Seed Database
+      # Seed Database
       - name: Seed Database
         run: docker exec user_management_api php artisan db:seed --force
 
-      # 11. Run Tests (inside container)
+      # Run Tests (inside container)
       - name: Run Tests
         run: docker exec user_management_api php artisan test --filter=ApiTest
 
-      # 8. Login to Docker Hub
+      # Login to Docker Hub
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # 9. Build & Push App Image
+      # Build & Push App Image
       - name: Build & Push App
         uses: docker/build-push-action@v5
         with:
           context: .
           file: Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/user-management-api:v1
+          tags: ${{ secrets.DOCKER_USERNAME }}/user-management-api:v2
 
-      # 10. Build & Push Nginx Image
+      # Build & Push Nginx Image
       - name: Build & Push Nginx
         uses: docker/build-push-action@v5
         with:
           context: .
           file: Dockerfile.nginx
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/usermanagementapi-webserver:v1
+          tags: ${{ secrets.DOCKER_USERNAME }}/usermanagementapi-webserver:v2
 
-      # 11. SSH to Azure VM & Deploy (Won't work if something above failed)
+      # SSH to Azure VM & Deploy (Won't work if something above failed)
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -151,15 +145,12 @@ jobs:
             DB_PASSWORD=${{ secrets.DB_PASSWORD }}
             EOF
 
-            # Pull latest images
-            docker compose -f docker-compose.prod.yaml pull
+            # # Restart containers
+            # docker compose -f docker-compose.prod.yaml down
+            # docker compose -f docker-compose.prod.yaml up -d
 
-            # Restart containers
-            docker compose -f docker-compose.prod.yaml down
-            docker compose -f docker-compose.prod.yaml up -d
-
-            # Laravel commands
-            docker exec user_management_api php artisan migrate --force
-            docker exec user_management_api php artisan config:cache
+            # # Laravel commands
+            # docker exec user_management_api php artisan migrate --force
+            # docker exec user_management_api php artisan config:cache
 
 
