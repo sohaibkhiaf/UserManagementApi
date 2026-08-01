@@ -24,24 +24,9 @@ services:
     networks:
       - user_management_network
 
-  # db:
-  #   image: mariadb:10.4.32
-  #   container_name: mysql
-  #   restart: unless-stopped
-  #   environment:
-  #     MYSQL_DATABASE: ${DB_DATABASE}
-  #     MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-  #     MYSQL_PASSWORD: ${DB_PASSWORD}
-  #     MYSQL_USER: ${DB_USERNAME}
-  #   volumes:
-  #     - dbdata:/var/lib/mysql
-  #   networks:
-  #     - user_management_network
-
 networks:
   user_management_network:
 
 volumes:
-  # dbdata:
   appdata:
 

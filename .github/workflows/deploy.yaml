@@ -150,13 +150,12 @@ jobs:
             DB_SSLMODE=require
             EOF
 
-            ## Optional auto deployment ## 
-            # # Restart containers
-            # docker compose -f docker-compose.prod.yaml down
-            # docker compose -f docker-compose.prod.yaml up -d
+            # Restart containers
+            docker compose -f docker-compose.prod.yaml down
+            docker compose -f docker-compose.prod.yaml up -d
 
-            # # Laravel commands
-            # docker exec user_management_api php artisan migrate --force
-            # docker exec user_management_api php artisan config:cache
+            # Laravel commands
+            docker exec user_management_api php artisan migrate --force
+            docker exec user_management_api php artisan config:cache
 
 
